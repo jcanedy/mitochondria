@@ -1,11 +1,13 @@
 import numpy as np
+import math
+import matplotlib.pyplot as plt
 
 # Constants
 A = 0
 ALPHA = 1
 
 # Mitochondria per cell
-mtDNAPerCell = 100;
+mtDNAPerCell = 1000;
 
 # Helper Functions
 
@@ -24,8 +26,15 @@ def percentHomoplasmic(cells):
 			homoplasmicCells += 1
 	return homoplasmicCells / totalCells
 
+def percentAlpha(cells):
+	percentAlphaPerCell = []
+	for cell in cells:
+		percentAlphaPerCell.append(cell[ALPHA] / mtDNAPerCell)
+	return percentAlphaPerCell
+
+
 # Number of Generations
-generations = 30;
+generations = 20;
 
 # Proportion of mitochondria passed to daughter
 buddingProportion = 0.25
@@ -96,4 +105,13 @@ for generation in range(generations):
 	cells = cellsInNextGeneration
 	percentHomoplasmicInGeneration[generation] = percentHomoplasmic(cells)
 
-print percentHomoplasmicInGeneration;
+
+# Graph Histogram of Last Generation of Alpha/mtDNAPerCell
+
+print percentHomoplasmicInGeneration
+
+numBins = round(math.sqrt(len(cells)))
+percentAlphaInLastGeneration = percentAlpha(cells)
+
+plt.hist(percentAlphaInLastGeneration, numBins, normed=1, facecolor='green', alpha=0.5)
+plt.show()
