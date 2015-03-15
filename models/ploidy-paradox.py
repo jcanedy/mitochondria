@@ -8,14 +8,34 @@ A = 0
 ALPHA = 1
 
 # Mitochondria per cell
-mtDNAPerCell = 20;
+mtDNAPerCell = 1000
+
+# Number of Generations
+generations = 20;
+
+# Proportion of mitochondria passed to daughter
+buddingProportion = 0.25
+
+percentHomoplasmicInGeneration = generations*[0];
+
+# Mitochondria per Daughter cell
+mtDNAPerDaughter = round(buddingProportion * mtDNAPerCell)
+
+# The probability Alpha will be in daughter
+probabilityOfAlphaInDaughter = 0.5
+
+# Number mitochondria DNA from of a and alpha [a, alpha] 
+cells = [2*[mtDNAPerCell*0.5]]
 
 # Helper Functions
 
 # grow(n, p)
 def grow(p, cell):
-	cell[A] = round(1/p*cell[A])
-	cell[ALPHA] = round(1/p*cell[ALPHA])
+	percentA = cell[A] / (cell[A] + cell[ALPHA])
+	if np.random.rand() < percentA:
+		cell[A] += mtDNAPerCell - (cell[A] + cell[ALPHA])
+	else:
+		cell[ALPHA] += mtDNAPerCell - (cell[A] + cell[ALPHA])
 	return cell
 
 def percentHomoplasmic(cells):
@@ -32,24 +52,6 @@ def percentAlpha(cells):
 	for cell in cells:
 		percentAlphaPerCell.append(cell[ALPHA] / mtDNAPerCell)
 	return percentAlphaPerCell
-
-
-# Number of Generations
-generations = 20;
-
-# Proportion of mitochondria passed to daughter
-buddingProportion = 0.5
-
-percentHomoplasmicInGeneration = generations*[0];
-
-# Mitochondria per Daughter cell
-mtDNAPerDaughter = round(buddingProportion * mtDNAPerCell)
-
-# The probability Alpha will be in daughter
-probabilityOfAlphaInDaughter = 0.5
-
-# Number mitochondria DNA from of a and alpha [a, alpha] 
-cells = [2*[mtDNAPerCell*0.5]]
 
 # For each generation
 for generation in range(generations):
@@ -117,6 +119,4 @@ percentAlphaInLastGeneration = percentAlpha(cells)
 mpl_fig = plt.figure()
 
 plt.hist(percentAlphaInLastGeneration, numBins, normed=0, facecolor='green', alpha=0.5)
-unique_url = py.plot_mpl(mpl_fig, filename="Mitochondria: Random Segregation")
-
-print unique_url
+unique_url = py.plot_mpl(mpl_fig, filename="Mitochondria: Ploidy Paradox")
