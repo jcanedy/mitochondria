@@ -5,7 +5,7 @@ A = 0
 ALPHA = 1
 
 # Mitochondria per cell
-mtDNAPerCell = 100;
+mtDNAPerCell = 20;
 
 # Helper Functions
 
@@ -25,7 +25,7 @@ def percentHomoplasmic(cells):
 	return homoplasmicCells / totalCells
 
 # Number of Generations
-generations = 30;
+generations = 20;
 
 # Proportion of mitochondria passed to daughter
 buddingProportion = 0.25
