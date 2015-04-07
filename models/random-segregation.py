@@ -8,7 +8,7 @@ A = 0
 ALPHA = 1
 
 # Mitochondria per cell
-mtDNAPerCell = 50
+mtDNAPerCell = 100
 
 # Helper Functions
 
