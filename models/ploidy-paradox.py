@@ -1,7 +1,11 @@
 import numpy as np
 import math
 import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+import matplotlib.path as path
 import plotly.plotly as py
+
+fig, ax = plt.subplots()
 
 # Constants
 A = 0
@@ -11,7 +15,7 @@ ALPHA = 1
 mtDNAPerCell = 1000
 
 # Number of Generations
-generations = 20;
+generations = 20
 
 # Proportion of mitochondria passed to daughter
 buddingProportion = 0.25
