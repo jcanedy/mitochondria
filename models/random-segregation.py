@@ -1,14 +1,14 @@
 import numpy as np
 import math
 import matplotlib.pyplot as plt
-import plotly.plotly as py
+#import plotly.plotly as py
 
 # Constants
 A = 0
 ALPHA = 1
 
 # Mitochondria per cell
-mtDNAPerCell = 20;
+mtDNAPerCell = 100;
 
 # Helper Functions
 
@@ -60,7 +60,8 @@ for generation in range(generations):
 	for motherCell in cells:
 		# run binomial distribution to see how many alpha are selected
 		daughterAlphas = np.random.binomial(mtDNAPerDaughter, probabilityOfAlphaInDaughter)
-
+		# Genya: daughterAlphas = np.random.binomial(round(motherCell[ALPHA]*buddProportion), probabilityOfAlphaInDaughter)
+		# ?? bin(#alphamtdna, budd percent)
 
 		# Create a budding daughter cell
 		daughterCell = [0, 0]
@@ -114,9 +115,10 @@ print percentHomoplasmicInGeneration
 numBins = round(math.sqrt(len(cells)))
 percentAlphaInLastGeneration = percentAlpha(cells)
 
-mpl_fig = plt.figure()
+#mpl_fig = plt.figure()
 
 plt.hist(percentAlphaInLastGeneration, numBins, normed=0, facecolor='green', alpha=0.5)
-unique_url = py.plot_mpl(mpl_fig, filename="Mitochondria: Random Segregation")
+plt.show()
+#unique_url = py.plot_mpl(mpl_fig, filename="Mitochondria: Random Segregation")
 
-print unique_url
+#print unique_url
