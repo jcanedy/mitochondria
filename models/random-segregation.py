@@ -59,17 +59,19 @@ for generation in range(generations):
 	# For each cell in generation
 	for motherCell in cells:
 		# run binomial distribution to see how many alpha are selected
-		daughterAlphas = np.random.binomial(mtDNAPerDaughter, probabilityOfAlphaInDaughter)
-		# Genya: daughterAlphas = np.random.binomial(round(motherCell[ALPHA]*buddProportion), probabilityOfAlphaInDaughter)
+		#daughterAlphas = np.random.binomial(mtDNAPerDaughter, probabilityOfAlphaInDaughter)
+		# Genya:
+		daughterCell = [np.random.binomial(round(motherCell[ALPHA]*buddingProportion), probabilityOfAlphaInDaughter),\
+		np.random.binomial(round(motherCell[A]*buddingProportion), 1-probabilityOfAlphaInDaughter)]
 		# ?? bin(#alphamtdna, budd percent)
 
 		# Create a budding daughter cell
-		daughterCell = [0, 0]
+		#daughterCell = [0, 0]
 
 
 	 	# If the number of potiential Alphas is greater than 
 	 	# the number of Alphas in the mother 
-	 	if (daughterAlphas > motherCell[ALPHA]):
+		'''if (daughterAlphas > motherCell[ALPHA]):
 	 		# Select all the Alphas from the Mother cell
 	 		daughterCell[ALPHA] = motherCell[ALPHA]
 
@@ -90,7 +92,7 @@ for generation in range(generations):
 	 		daughterCell = \
 	 		[motherCell[A], mtDNAPerDaughter - motherCell[A]] if \
 	 		(daughterAs > motherCell[A]) else \
-	 		[daughterAs, daughterCell[ALPHA]]
+	 		[daughterAs, daughterCell[ALPHA]]'''
 
 	 	# Update the mother for A and Alpha
 		motherCell[A] -= daughterCell[A]
