@@ -14,15 +14,16 @@ A = 0
 ALPHA = 1
 
 # Mitochondria per cell
-initA = 25
-initAlpha = 25
+initA = 25.0
+initAlpha = 25.0
 
 # Helper Functions
 
 # grow(n, p)
-def grow(p, cell):
-	cell[A] = round(1/p*cell[A])
-	cell[ALPHA] = round(1/p*cell[ALPHA])
+def grow(cell):
+	factor = (initA + initAlpha) / (cell[A] + cell[ALPHA])
+	cell[A] = round(cell[A]*factor)
+	cell[ALPHA] = round(cell[ALPHA]*factor)
 	return cell
 
 def percentHomoplasmic(cells):
@@ -51,22 +52,22 @@ def cellSize(cells):
 	return sizes
 
 # Proportion of mitochondria passed to daughter
-buddingProportion = 0.25
+buddingProportion = .5
 
 percentHomoplasmicInGeneration = [0]
-
+                                 
 # Number mitochondria DNA from of a and alpha [a, alpha] 
 cells = [[initA, initAlpha]]
 
 #  Dilute after the number of cells is greater
-#  than or equal to 1 million
-diluteAfter = 1000000
+#  than or equal to 10^5
+diluteAfter = 100000
 
-# Number of cells to dilute to
-diluteTo = int(math.pow(2, 10))
+# Number of cells to dilute to 10^3
+diluteTo = 1000
 
 # Max Homplasmy to simulation
-homplasmicMax = 0.5
+homplasmicMax = 1
 
 generation = 1;
 
@@ -89,8 +90,8 @@ while True:
 		motherCell[ALPHA] -= daughterCell[ALPHA]
 
 		# Grow the cells
-		motherCell = grow(1 - buddingProportion, motherCell);
-		daughterCell = grow(buddingProportion, daughterCell);
+		motherCell = grow(motherCell);
+		daughterCell = grow(daughterCell);
 
 		# Check for "dead" (alpha + a = 0) for both mother and daughter
 		if (motherCell[ALPHA] + motherCell[A] != 0):
@@ -124,7 +125,6 @@ while True:
  	generation += 1
 
 
-
 # Graph Percent Homoplasmic for each generation
 
 print generation
@@ -137,5 +137,3 @@ plt.ylabel('Percent')
 plt.title(title)
 
 unique_url = py.plot_mpl(mpl_fig, filename=title)
-
-print unique_url
