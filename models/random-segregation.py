@@ -3,14 +3,19 @@ import math
 import random
 import matplotlib.pyplot as plt
 #import plotly.plotly as py
+import sys
+
+title = raw_input("Graph title: ")
+
+title = "Random Segregation: " + title
 
 # Constants
 A = 0
 ALPHA = 1
 
 # Mitochondria per cell
-initA = 50
-initAlpha = 50
+initA = 25
+initAlpha = 25
 
 # Helper Functions
 
@@ -39,19 +44,26 @@ def percentAlpha(cells):
 def dilute(cells, k):
 	return random.sample(cells, k)
 
+def cellSize(cells):
+	sizes = []
+	for cell in cells:
+		sizes.append(cell[A] + cell[ALPHA])
+	return sizes
+
 # Proportion of mitochondria passed to daughter
 buddingProportion = 0.25
 
-percentHomoplasmicInGeneration = []
+percentHomoplasmicInGeneration = [0]
 
 # Number mitochondria DNA from of a and alpha [a, alpha] 
 cells = [[initA, initAlpha]]
 
-# Number of generation to dilute after
-diluteAfter = 20
+#  Dilute after the number of cells is greater
+#  than or equal to 1 million
+diluteAfter = 1000000
 
 # Number of cells to dilute to
-diluteTo = math.pow(2, 10)
+diluteTo = int(math.pow(2, 10))
 
 # Max Homplasmy to simulation
 homplasmicMax = 0.5
@@ -93,29 +105,40 @@ while True:
 	cells = cellsInNextGeneration
 
 	# Dilute if necessary
-	if ((generation % diluteAfter) == 0 and generation != 0):
-		cells = dilute(cells, int(diluteTo))	
+	if (len(cells) >= diluteAfter):
+		cells = dilute(cells, diluteTo)
 
- 	percentHomoplasmicInGeneration.append(percentHomoplasmic(cells))
+	percent = percentHomoplasmic(cells)
 
- 	if (percentHomoplasmicInGeneration[generation - 1] > homplasmicMax):
+ 	percentHomoplasmicInGeneration.append(percent)
+
+
+
+ 	sys.stdout.write('Generation: {0} | Homoplasmic: {1:.2%} | Mean Cell Size {2:.2f}\r'.format(generation, percent, np.mean(cellSize(cells))))
+	sys.stdout.flush()
+
+ 	# print "Generation %d: Percent Homoplasmic %.2f, Number of Cells %.2f" % (generation, percent, len(cells))
+
+ 	if (percent >= homplasmicMax):
  		break
 
  	generation += 1
 
 
 
-# Graph Histogram of Last Generation of Alpha/(Alpha + A)
+# Graph Percent Homoplasmic for each generation
 
 print generation
 
-# numBins = round(math.sqrt(len(cells)))
-# percentAlphaInLastGeneration = percentAlpha(cells)
+#mpl_fig = plt.figure()
 
 
-# mpl_fig = plt.figure()
+plt.plot(percentHomoplasmicInGeneration)
+plt.xlabel('Generation')
+plt.ylabel('Percent')
+plt.title(title)
+plt.show()
+#unique_url = py.plot_mpl(mpl_fig, filename=title)
 
-# plt.hist(percentAlphaInLastGeneration, numBins, normed=0, facecolor='green', alpha=0.5)
-# unique_url = py.plot_mpl(mpl_fig, filename="Mitochondria: Random Segregation")
 
-# print unique_url
+#print unique_url
