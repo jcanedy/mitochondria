@@ -66,7 +66,7 @@ diluteAfter = 1000000
 diluteTo = int(math.pow(2, 10))
 
 # Max Homplasmy to simulation
-homplasmicMax = 0.5
+homplasmicMax = 0.9
 
 generation = 1;
 
