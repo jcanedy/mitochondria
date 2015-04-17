@@ -5,9 +5,10 @@ import matplotlib.pyplot as plt
 #import plotly.plotly as py
 import sys
 
-title = raw_input("Graph title: ")
+#title = raw_input("Graph title: ")
 
-title = "Random Segregation: " + title
+#title = "Random Segregation: " + title
+title = "Random Segregation: "
 
 # Constants
 A = 0
@@ -52,7 +53,7 @@ def cellSize(cells):
 	return sizes
 
 # Proportion of mitochondria passed to daughter
-buddingProportion = .5
+buddingProportion = .25
 
 percentHomoplasmicInGeneration = [0]
                                  
@@ -67,7 +68,6 @@ diluteAfter = 100000
 diluteTo = 1000
 
 # Max Homplasmy to simulation
-
 homplasmicMax = 1
 
 generation = 1;
@@ -80,7 +80,6 @@ while True:
 	# For each cell in generation
 	for motherCell in cells:
 		# run binomial distribution to see how many alpha are selected
-
 		daughterAlphas = np.random.binomial(motherCell[ALPHA], buddingProportion)
 		daughterAs = np.random.binomial(motherCell[A], buddingProportion)
 
@@ -131,15 +130,12 @@ while True:
 
 print generation
 
-#mpl_fig = plt.figure()
-
+mpl_fig = plt.figure()
 
 plt.plot(percentHomoplasmicInGeneration)
 plt.xlabel('Generation')
 plt.ylabel('Percent')
 plt.title(title)
 plt.show()
-#unique_url = py.plot_mpl(mpl_fig, filename=title)
-
 
 #unique_url = py.plot_mpl(mpl_fig, filename=title)
